@@ -110,6 +110,9 @@ RUN composer global require "laravel/installer"
 
 # install nodejs
 RUN apt-get install -y nodejs
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash && \
+    npm install -g n && \
+    n 6.9.5
 
 # install gulp
 RUN /usr/bin/npm install -g gulp
@@ -144,6 +147,8 @@ RUN apt-get remove --purge -y software-properties-common && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/man/?? && \
     rm -rf /usr/share/man/??_*
+
+RUN apt-get -y install python-pip && pip install awscli
 
 # expose ports
 EXPOSE 80 443 3306 6379
