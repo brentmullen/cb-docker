@@ -83,15 +83,15 @@ RUN phpenmod mcrypt && \
 RUN apt-get install -y sqlite3 libsqlite3-dev
 
 # install mysql 
-RUN echo mysql-server mysql-server/root_password password $DB_PASS | debconf-set-selections;\
-    echo mysql-server mysql-server/root_password_again password $DB_PASS | debconf-set-selections;\
-    apt-get install -y mysql-server && \
-    echo "default_password_lifetime = 0" >> /etc/mysql/my.cnf && \
-    sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 0.0.0.0/' /etc/mysql/my.cnf
-RUN /usr/sbin/mysqld & \
-    sleep 10s && \
-    echo "GRANT ALL ON *.* TO root@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION; CREATE USER 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret'; GRANT ALL ON *.* TO 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION; GRANT ALL ON *.* TO 'homestead'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION; FLUSH PRIVILEGES; CREATE DATABASE homestead;" | mysql
-VOLUME ["/var/lib/mysql"]
+# RUN echo mysql-server mysql-server/root_password password $DB_PASS | debconf-set-selections;\
+#     echo mysql-server mysql-server/root_password_again password $DB_PASS | debconf-set-selections;\
+#     apt-get install -y mysql-server && \
+#     echo "default_password_lifetime = 0" >> /etc/mysql/my.cnf && \
+#     sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 0.0.0.0/' /etc/mysql/my.cnf
+# RUN /usr/sbin/mysqld & \
+#     sleep 10s && \
+#     echo "GRANT ALL ON *.* TO root@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION; CREATE USER 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret'; GRANT ALL ON *.* TO 'homestead'@'0.0.0.0' IDENTIFIED BY 'secret' WITH GRANT OPTION; GRANT ALL ON *.* TO 'homestead'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION; FLUSH PRIVILEGES; CREATE DATABASE homestead;" | mysql
+# VOLUME ["/var/lib/mysql"]
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
@@ -102,7 +102,7 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 # RUN composer global require "hirak/prestissimo"
 
 # install laravel envoy
-RUN composer global require "laravel/envoy"
+# RUN composer global require "laravel/envoy"
 
 #install laravel installer
 RUN composer global require "laravel/installer"
@@ -123,13 +123,13 @@ RUN /usr/bin/npm install -g bower
 RUN apt-get install -y redis-server
 
 # install blackfire
-RUN apt-get install -y blackfire-agent blackfire-php
+# RUN apt-get install -y blackfire-agent blackfire-php
 
 # install beanstalkd
-RUN apt-get install -y --force-yes beanstalkd && \
-    sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd && \
-    sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd && \
-    /etc/init.d/beanstalkd start
+# RUN apt-get install -y --force-yes beanstalkd && \
+#     sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd && \
+#     sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd && \
+#     /etc/init.d/beanstalkd start
 
 # install supervisor
 RUN apt-get install -y supervisor && \
